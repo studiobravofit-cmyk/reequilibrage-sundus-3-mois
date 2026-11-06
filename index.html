@@ -759,6 +759,7 @@ dq();
 <div class="ccrow4"><input id="cnk" class="ccin" inputmode="decimal" placeholder="kcal/100 g"><input id="cnp" class="ccin" inputmode="decimal" placeholder="Prot."><input id="cng" class="ccin" inputmode="decimal" placeholder="Gluc."><input id="cnl" class="ccin" inputmode="decimal" placeholder="Lip."></div>
 <button class="swap" id="cnadd">Enregistrer cet aliment</button></details>
 </div>
+<div class="card cc" style="margin-top:14px" id="bfrx"></div>
 <div class="card cc" style="margin-top:14px" id="ccdays"></div>
 <div class="card cc" style="margin-top:14px"><h3>Ma semaine</h3><div class="ccweek" id="ccweek"></div><p style="font-size:14px;margin-top:8px" id="ccavg"></p></div>
 <div class="card cc" style="margin-top:14px"><h3>Sauvegarde</h3><p style="font-size:14px;color:var(--muted)">Avant de changer de téléphone ou de vider ton navigateur, télécharge ta sauvegarde. Tu pourras la réimporter ici.</p><div class="ccrow"><button class="swap" id="ccexp">Télécharger ma sauvegarde</button><label class="swap" style="display:inline-block">Importer<input type="file" id="ccimp" accept=".json" style="display:none"></label></div></div>
@@ -1185,6 +1186,10 @@ $('#ccavg').innerHTML=nd?'Moyenne sur '+nd+' jour(s) notés : <b>'+r0(sm/nd).toL
 $('#ccexp').onclick=function(){var data={},i,n;for(i=0;i<localStorage.length;i++){n=localStorage.key(i);if(n.indexOf('bf_sundus_')==0)data[n]=localStorage.getItem(n)}var a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(data)],{type:'application/json'}));a.download='sauvegarde-sundus-'+key(0)+'.json';document.body.appendChild(a);a.click();a.remove();t('Sauvegarde téléchargée')};
 $('#ccimp').onchange=function(){var f=this.files[0];if(!f)return;var r=new FileReader();r.onload=function(){try{var d=JSON.parse(r.result);Object.keys(d).forEach(function(k){localStorage.setItem(k,d[k])});t('Sauvegarde importée');setTimeout(function(){location.reload()},900)}catch(e){t('Fichier illisible')}};r.readAsText(f)};
 favs();draw();
+
+window.BFCC={g:g,s:s,t:t,foods:function(){return F},mealName:function(){return MN[meal]},
+upsert:function(old,f){[C,F].forEach(function(A){var i=-1;A.forEach(function(x,j){if(x.n==old)i=j});if(f){if(i>-1)A[i]=f;else A.push(f)}else if(i>-1)A.splice(i,1)});s('custom',C)},
+add:function(e){var k=key(off);e.m=meal;(J[k]=J[k]||[]).push(e);s('journal',J);draw()}};
 })();
 </script>
 <script>
@@ -1218,7 +1223,7 @@ if('BarcodeDetector' in window){createImageBitmap(f).then(function(b){return new
 .bfeg{display:flex;align-items:center;gap:4px;font-size:13px;white-space:nowrap}.bfeg input{width:64px;border:1px solid var(--line,#ddd);border-radius:10px;padding:7px;font:inherit;font-size:14px;text-align:right}
 .bfeauto{font-size:12px;color:var(--muted,#8a7a85);white-space:nowrap}
 .bferm{border:0;background:transparent;color:var(--muted,#8a7a85);font-size:20px;cursor:pointer;width:30px}
-#bferes{display:flex;flex-direction:column;gap:6px;margin-top:8px}.bferes{display:flex;justify-content:space-between;align-items:center;text-align:left;border:1px solid var(--line,#e6e0ea);background:#fff;border-radius:12px;padding:10px 12px;font:inherit;font-size:14px;font-weight:700;color:inherit;cursor:pointer}.bferes small{font-weight:600;font-size:11px;color:var(--muted,#8a7a85)}
+#bferes{display:flex;flex-direction:column;gap:6px;margin-top:8px}.bferes{display:flex;gap:10px;justify-content:space-between;align-items:center;text-align:left;border:1px solid var(--line,#e6e0ea);background:#fff;border-radius:12px;padding:10px 12px;font:inherit;font-size:14px;font-weight:700;color:inherit;cursor:pointer}.bferes small{font-weight:600;font-size:11px;color:var(--muted,#8a7a85)}
 .bfenote{font-size:12.5px;color:var(--muted,#8a7a85);line-height:1.5;margin:10px 0 0}.bfecoach a{color:var(--wine,#6b2440)}
 .bfebtns{display:flex;gap:10px;margin-top:16px}.bfeok{flex:1;border:0;background:var(--wine,#6b2440);color:#fff;border-radius:14px;padding:13px;font:inherit;font-weight:800;font-size:15px;cursor:pointer}.bfeok:disabled{opacity:.6}
 .bfecan{border:1px solid var(--line,#ddd);background:#fff;color:inherit;border-radius:14px;padding:13px 16px;font:inherit;font-weight:700;cursor:pointer}
@@ -1233,6 +1238,10 @@ button.bferow{width:100%;background:transparent;border:0;border-bottom:1px solid
 .bfeauto2{display:flex;align-items:center;gap:8px;margin-top:14px;font-weight:700;font-size:14px}.bfeauto2 input{width:20px;height:20px;accent-color:var(--wine,#6b2440)}
 .bfedel{flex:1;border:1px solid #c0392b;background:#fff;color:#c0392b;border-radius:14px;padding:13px;font:inherit;font-weight:800;font-size:15px;cursor:pointer}
 .bfewarn{color:var(--wine,#6b2440)}
+#bfrx .bfrxp{margin:4px 0 12px}.bfrxi{border:1px solid var(--line,#e6e0ea);border-radius:16px;padding:12px;margin-top:10px;background:#fff}.bfrxt b{display:block;color:var(--plum,#3a2233);font-size:15px}.bfrxt small{display:block;font-size:12.5px;color:var(--muted,#8a7a85);margin-top:2px;line-height:1.45}
+.bfrxa{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}.bfrxa button{flex:1 1 auto;padding:10px 12px;font-size:13.5px}
+.bfecre{display:block;width:100%;margin-top:6px;border:1px dashed var(--wine,#6b2440);background:transparent;color:var(--wine,#6b2440);border-radius:12px;padding:10px;font:inherit;font-size:13.5px;font-weight:700;cursor:pointer;text-align:center}
+.bfecf{border:1px solid var(--line,#e6e0ea);border-radius:14px;padding:12px;margin-top:6px}.bfecg{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
 </style>
 <script>
 (function(){
@@ -1289,6 +1298,7 @@ function item(k,nw){var c=nw||JSON.parse(JSON.stringify(work.r[k])),d=D[c.f],her
    h+='<label class="bfeauto2"><input type="checkbox" id="bfia"'+(c.auto?' checked':'')+'> Ajuster automatiquement à mon palier</label><p class="bfenote" id="bfin" style="margin-top:4px">'+(c.auto?'Le site recalcule ce poids pour respecter tes macros. Décoche si tu veux garder ta quantité.':'Ta quantité sera gardée telle quelle.')+'</p>';
    h+='<div class="bfetot"><div><small>Calories</small><b id="bfk">'+fr(m.k)+'</b></div><div><small>Protéines</small><b id="bfp">'+fr(m.p)+' g</b></div><div><small>Glucides</small><b id="bfg">'+fr(m.g)+' g</b></div><div><small>Lipides</small><b id="bfl">'+fr(m.l)+' g</b></div></div>';
    h+='<p class="bfenote">Pour 100 g : '+fr(d[1])+' kcal · '+String(d[2]).replace('.',',')+' g protéines · '+String(d[3]).replace('.',',')+' g glucides · '+String(d[4]).replace('.',',')+' g lipides.</p>'}
+  if(!nw)h+='<label class="bfel">Remplacer par un autre aliment</label><input class="bfein" id="bfirq" placeholder="Tape l’aliment qui le remplace" autocomplete="off"><div id="bfirr"></div>';
   h+='<div class="bfebtns">'+(nw?'':'<button type="button" class="bfedel" id="bfid">Supprimer</button>')+'<button type="button" class="bfeok" id="bfis">'+(nw?'Ajouter':'Sauvegarder')+'</button></div>';
   modal(h);
   box.querySelector('#bfib').onclick=list;
@@ -1296,6 +1306,9 @@ function item(k,nw){var c=nw||JSON.parse(JSON.stringify(work.r[k])),d=D[c.f],her
    v.oninput=function(){upd();if(c.auto){c.auto=false;box.querySelector('#bfia').checked=false;box.querySelector('#bfin').textContent='Ta quantité sera gardée telle quelle.'}};
    var st=u?1:(c.g>=100?10:5);box.querySelector('#bfim').onclick=function(){v.value=Math.max(0,(parseFloat(v.value)||0)-st);v.oninput()};box.querySelector('#bfip').onclick=function(){v.value=(parseFloat(v.value)||0)+st;v.oninput()};
    box.querySelector('#bfia').onchange=function(){c.auto=this.checked;body()}}
+  if(!nw){var rq=box.querySelector('#bfirq');rq.oninput=function(){var v=norm(rq.value.trim()),r=box.querySelector('#bfirr');if(v.length<2){r.innerHTML='';return}var out=[];for(var f in D){var n=norm(D[f][0]);if(n.indexOf(v)>-1)out.push([n.indexOf(v)==0?0:1,f])}out.sort(function(a,b){return a[0]-b[0]});out=out.slice(0,8).map(function(x){return x[1]});
+   r.innerHTML=out.length?out.map(function(f){return'<button type="button" class="bferes" data-f="'+f+'">'+esc(D[f][0])+'<small>'+fr(D[f][1])+' kcal / 100 g</small></button>'}).join(''):'<p class="bfenote">Aucun aliment trouvé. Essaie un autre mot.</p>';
+   r.querySelectorAll('.bferes').forEach(function(b){b.onclick=function(){var f=b.dataset.f,ro=role(f),dd=D[f];c={f:f,base:ro,auto:ro!='X'&&dd[5]!='h',g:dd[5]=='h'?1:(dd[6]||(ro=='X'?c.g:DEF[ro])),lab:''};d=dd;herb=dd[5]=='h';u=dd[6];body()}})}}
   if(!nw)box.querySelector('#bfid').onclick=function(){work.r.splice(k,1);list()};
   box.querySelector('#bfis').onclick=function(){if(!herb&&!c.g){toast2('Indique une quantité');return}if(nw)work.r.push(c);else work.r[k]=c;list()}}
  body()}
@@ -1308,6 +1321,91 @@ function act(a){var dish=cur&&cur[0];
  if(a=='rm'){var m2=mine();delete m2[dish];ls(K,m2);close();redraw();toast2('Recette remise comme au départ')}}
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('.bfedit');if(b){e.preventDefault();open(+b.dataset.i)}});
 redraw();
+})();
+</script>
+<script>
+(function(){
+var B=window.BFCC;if(!B)return;
+var RS=B.g('recipes',[]),box=null,W=null;
+function sv(){B.s('recipes',RS)}
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+function fr(n){return Math.round(n).toLocaleString('fr-FR')}
+function f1(n){return(Math.round(n*10)/10).toLocaleString('fr-FR')}
+function num(x){return parseFloat(String(x||'').replace(',','.'))}
+function norm(x){return String(x).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/œ/g,'oe')}
+function foods(){var out=B.foods().slice(),seen={};out.forEach(function(f){seen[norm(f.n).replace(/\s*\(.*$/,'')]=1});
+ if(window.BFG&&BFG.D)for(var k in BFG.D){var d=BFG.D[k];if(d[5]=='h')continue;var key=norm(d[0]);if(seen[key])continue;seen[key]=1;out.push({n:d[0],k:d[1],p:d[2],g:d[3],l:d[4],u:d[6]||0})}return out}
+function T(it){var r={k:0,p:0,g:0,l:0,gr:0};it.forEach(function(x){var m=x.gr/100;r.k+=x.k*m;r.p+=x.p*m;r.g+=x.g*m;r.l+=x.l*m;r.gr+=x.gr});return r}
+function toast(m){if(B.t)B.t(m)}
+function modal(h){if(!box){box=document.createElement('div');box.className='bfe';document.body.appendChild(box);box.addEventListener('click',function(e){if(e.target==box)close()})}box.innerHTML='<div class="bfec">'+h+'</div>';box.style.display='flex';document.body.style.overflow='hidden';box.firstChild.scrollTop=0}
+function close(){if(box)box.style.display='none';document.body.style.overflow=''}
+/* synchronise la recette dans les aliments du compteur */
+function sync(r,old){var t=T(r.it),por=Math.max(1,r.por||1);B.upsert(old||r.n,t.gr?{n:r.n,k:Math.round(t.k/t.gr*100),p:Math.round(t.p/t.gr*1000)/10,g:Math.round(t.g/t.gr*1000)/10,l:Math.round(t.l/t.gr*1000)/10,u:Math.round(t.gr/por),rec:por,b:'Ma recette'}:null)}
+function legacy(){var out=[];B.foods().forEach(function(f){if(f.rec&&!RS.some(function(r){return r.n==f.n}))out.push(f)});return out}
+function card(){var el=document.getElementById('bfrx');if(!el)return;var h='<h3>Mes recettes</h3><p class="k2help bfrxp">Crée ta recette une seule fois, elle reste enregistrée. Tu peux la modifier quand tu veux : enlever un ingrédient, le remplacer par un autre, en ajouter ou changer les quantités.</p><button type="button" class="donebtn" id="bfrxnew">+ Créer une recette</button>';
+ if(!RS.length&&!legacy().length)h+='<p class="bfenote">Aucune recette pour le moment.</p>';
+ RS.forEach(function(r,i){var t=T(r.it),por=Math.max(1,r.por||1);h+='<div class="bfrxi"><div class="bfrxt"><b>'+esc(r.n)+'</b><small>'+r.it.length+' ingrédient'+(r.it.length>1?'s':'')+' · '+por+' portion'+(por>1?'s':'')+' · '+fr(t.k/por)+' kcal la portion</small></div><div class="bfrxa"><button type="button" class="bfeok" data-r="add" data-i="'+i+'">Ajouter à mon repas</button><button type="button" class="bfecan" data-r="ed" data-i="'+i+'">Modifier</button><button type="button" class="bfecan" data-r="dup" data-i="'+i+'">Dupliquer</button></div></div>'});
+ legacy().forEach(function(f){h+='<div class="bfrxi"><div class="bfrxt"><b>'+esc(f.n)+'</b><small>Recette enregistrée sans le détail des ingrédients. Touche « Compléter » pour les ajouter une fois, ensuite tu pourras la modifier.</small></div><div class="bfrxa"><button type="button" class="bfecan" data-r="leg" data-n="'+esc(f.n)+'">Compléter</button></div></div>'});
+ el.innerHTML=h;
+ el.querySelector('#bfrxnew').onclick=function(){edit({n:'',por:1,it:[]},-1)};
+ el.querySelectorAll('[data-r]').forEach(function(b){b.onclick=function(){var i=+b.dataset.i,a=b.dataset.r;
+  if(a=='ed')edit(JSON.parse(JSON.stringify(RS[i])),i);
+  if(a=='dup'){var c=JSON.parse(JSON.stringify(RS[i]));c.n=c.n+' (variante)';edit(c,-1)}
+  if(a=='add')addSheet(i);
+  if(a=='leg')edit({n:b.dataset.n,por:1,it:[],old:b.dataset.n},-1)}})}
+function addSheet(i){var r=RS[i],t=T(r.it),por=Math.max(1,r.por||1),q=1;
+ function body(){var m=q/por;modal('<div class="bfeh"><b>'+esc(r.n)+'</b><button type="button" class="bfex" id="bfrxx" aria-label="Fermer">×</button></div><p class="bfenote">Ajouté dans « '+esc(B.mealName())+' ». Pour changer de repas, choisis-le d’abord dans le compteur.</p><label class="bfel">Nombre de portions</label><div class="bfeqty"><button type="button" id="bfrxm">−</button><input id="bfrxq" type="number" inputmode="decimal" min="0" step="0.5" value="'+q+'"><span>portion(s)</span><button type="button" id="bfrxp">+</button></div><div class="bfetot"><div><small>Calories</small><b>'+fr(t.k*m)+'</b></div><div><small>Protéines</small><b>'+fr(t.p*m)+' g</b></div><div><small>Glucides</small><b>'+fr(t.g*m)+' g</b></div><div><small>Lipides</small><b>'+fr(t.l*m)+' g</b></div></div><div class="bfebtns"><button type="button" class="bfeok" id="bfrxok">Ajouter</button><button type="button" class="bfecan" id="bfrxc">Annuler</button></div>');
+  var v=box.querySelector('#bfrxq');v.onchange=function(){q=Math.max(0,num(v.value)||0);body()};box.querySelector('#bfrxm').onclick=function(){q=Math.max(.5,q-.5);body()};box.querySelector('#bfrxp').onclick=function(){q+=.5;body()};
+  box.querySelector('#bfrxx').onclick=close;box.querySelector('#bfrxc').onclick=close;
+  box.querySelector('#bfrxok').onclick=function(){q=Math.max(0,num(v.value)||0);if(!q){toast('Indique un nombre de portions');return}var m=q/por,gr=t.gr*m;B.add({n:r.n,q:f1(q)+' portion'+(q>1?'s':''),k:t.k*m,p:t.p*m,g:t.g*m,l:t.l*m,gr:gr,b:{k:t.k/t.gr*100,p:t.p/t.gr*100,g:t.g/t.gr*100,l:t.l/t.gr*100}});close();toast(r.n+' ajouté')}}
+ if(!t.gr){toast('Ajoute d’abord des ingrédients');return}body()}
+function qty(x){return fr(x.gr)+' g'}
+function edit(r,idx){W={r:r,idx:idx};list()}
+function list(){var r=W.r,t=T(r.it),por=Math.max(1,r.por||1),h='<div class="bfeh"><b>'+(W.idx<0?'Nouvelle recette':'Modifier ma recette')+'</b><button type="button" class="bfex" data-x="1" aria-label="Fermer">×</button></div>';
+ h+='<label class="bfel">Nom de la recette</label><input class="bfein" id="bfrxn" placeholder="Par exemple Pâte brisée maison" value="'+esc(r.n)+'">';
+ h+='<label class="bfel">Nombre de portions</label><input class="bfein" id="bfrxpo" type="number" inputmode="numeric" min="1" value="'+por+'">';
+ h+='<label class="bfel">Ingrédients · touche un aliment pour le modifier</label><div class="bfelist">';
+ if(!r.it.length)h+='<p class="bfenote">Aucun ingrédient pour l’instant. Ajoute-les ci-dessous.</p>';
+ r.it.forEach(function(x,k){h+='<button type="button" class="bferow" data-k="'+k+'"><span class="bferq">'+qty(x)+'</span><span class="bfern">'+esc(x.n)+'</span><span class="bferk">'+fr(x.k*x.gr/100)+' kcal<i>›</i></span></button>'});
+ h+='</div>';
+ if(r.it.length)h+='<p class="bfel" style="margin-bottom:0">Toute la recette · '+fr(t.gr)+' g</p><div class="bfetot"><div><small>Calories</small><b>'+fr(t.k)+'</b></div><div><small>Protéines</small><b>'+fr(t.p)+' g</b></div><div><small>Glucides</small><b>'+fr(t.g)+' g</b></div><div><small>Lipides</small><b>'+fr(t.l)+' g</b></div></div>'+(por>1?'<p class="bfenote">Une portion : '+fr(t.k/por)+' kcal · '+fr(t.p/por)+' g protéines · '+fr(t.g/por)+' g glucides · '+fr(t.l/por)+' g lipides · '+fr(t.gr/por)+' g</p>':'');
+ h+='<label class="bfel">Ajouter un ingrédient</label><input class="bfein" id="bfrxq2" placeholder="Tape un aliment, par exemple farine, beurre, sésame" autocomplete="off"><div id="bfrxres"></div>';
+ h+='<div class="bfebtns"><button type="button" class="bfeok" id="bfrxsave">Enregistrer la recette</button><button type="button" class="bfecan" data-x="1">Annuler</button></div>';
+ if(W.idx>-1)h+='<button type="button" class="bfereset" id="bfrxdel">Supprimer cette recette</button>';
+ modal(h);
+ box.querySelectorAll('[data-x]').forEach(function(b){b.onclick=close});
+ box.querySelector('#bfrxn').oninput=function(){r.n=this.value};
+ box.querySelector('#bfrxpo').onchange=function(){r.por=Math.max(1,Math.round(num(this.value)||1));list()};
+ box.querySelectorAll('.bferow').forEach(function(b){b.onclick=function(){item(+b.dataset.k)}});
+ finder(box.querySelector('#bfrxq2'),box.querySelector('#bfrxres'),function(f){item(-1,{n:f.n,k:f.k,p:f.p,g:f.g,l:f.l,u:f.u||0,gr:f.u||100})});
+ box.querySelector('#bfrxsave').onclick=function(){var n=(r.n||'').trim();if(!n){toast('Donne un nom à ta recette');return}if(!r.it.length){toast('Ajoute au moins un ingrédient');return}
+  if(RS.some(function(x,i){return x.n==n&&i!=W.idx})){toast('Tu as déjà une recette avec ce nom');return}
+  r.n=n;var old=r.old||(W.idx>-1?RS[W.idx].n:null);delete r.old;if(W.idx>-1)RS[W.idx]=r;else RS.unshift(r);sv();sync(r,old);close();card();toast('Recette enregistrée')};
+ var d=box.querySelector('#bfrxdel');if(d)d.onclick=function(){if(!confirm('Supprimer la recette « '+RS[W.idx].n+' » ?'))return;B.upsert(RS[W.idx].n,null);RS.splice(W.idx,1);sv();close();card();toast('Recette supprimée')}}
+function finder(q,res,cb){q.oninput=function(){var v=norm(q.value.trim());if(v.length<2){res.innerHTML='';return}var w=v.split(/\s+/),out=foods().filter(function(f){if(f.rec)return false;var n=norm(f.n);return w.every(function(x){return n.indexOf(x)>-1})}).map(function(f){var n=norm(f.n),p=n.indexOf(w[0]);return[(p==0?0:(n.charAt(p-1)==' '?1:3))+n.replace(/\s*\(.*$/,'').length/100,f]}).sort(function(a,b){return a[0]-b[0]}).map(function(x){return x[1]}).slice(0,10);
+ res.innerHTML=out.length?'':'<p class="bfenote">Aucun aliment trouvé avec ce mot.</p>';
+ out.forEach(function(f){var b=document.createElement('button');b.type='button';b.className='bferes';b.innerHTML=esc(f.n)+'<small>'+fr(f.k)+' kcal / 100 g</small>';b.onclick=function(){cb(f)};res.appendChild(b)});
+ var c=document.createElement('button');c.type='button';c.className='bfecre';c.textContent='Il n’est pas dans la liste ? Crée « '+q.value.trim()+' »';c.onclick=function(){creator(res,q.value.trim(),cb)};res.appendChild(c)}}
+function creator(res,name,cb){res.innerHTML='<div class="bfecf"><p class="bfenote" style="margin-top:0">Recopie les valeurs pour 100 g, écrites sur l’emballage. Pour les épices ou les herbes, tu peux laisser 0.</p><input class="bfein" id="bfcn" placeholder="Nom de l’aliment" value="'+esc(name)+'"><div class="bfecg"><input class="bfein" id="bfck" inputmode="decimal" placeholder="kcal"><input class="bfein" id="bfcp" inputmode="decimal" placeholder="Protéines"><input class="bfein" id="bfcg" inputmode="decimal" placeholder="Glucides"><input class="bfein" id="bfcl" inputmode="decimal" placeholder="Lipides"></div><button type="button" class="bfeok" id="bfcok" style="width:100%;margin-top:10px">Créer et ajouter</button></div>';
+ res.querySelector('#bfcok').onclick=function(){function v(i){return Math.max(0,num(res.querySelector(i).value)||0)}var n=res.querySelector('#bfcn').value.trim();if(!n){toast('Donne un nom à l’aliment');return}var f={n:n,k:v('#bfck'),p:v('#bfcp'),g:v('#bfcg'),l:v('#bfcl'),u:0};B.upsert(n,f);cb(f)}}
+function item(k,nw){var x=nw||JSON.parse(JSON.stringify(W.r.it[k]));
+ function body(){var m=x.gr/100,h='<div class="bfeh"><button type="button" class="bfex" id="bfrxb" aria-label="Retour">‹</button><b>'+esc(x.n)+'</b><span style="width:34px"></span></div>';
+  h+='<label class="bfel">Quantité</label><div class="bfeqty"><button type="button" id="bfrxm">−</button><input id="bfrxv" type="number" inputmode="decimal" min="0" value="'+Math.round(x.gr*10)/10+'"><span>g</span><button type="button" id="bfrxp">+</button></div>';
+  h+='<div class="bfetot"><div><small>Calories</small><b id="bfrk">'+fr(x.k*m)+'</b></div><div><small>Protéines</small><b id="bfrp">'+fr(x.p*m)+' g</b></div><div><small>Glucides</small><b id="bfrg">'+fr(x.g*m)+' g</b></div><div><small>Lipides</small><b id="bfrl">'+fr(x.l*m)+' g</b></div></div>';
+  h+='<p class="bfenote">Pour 100 g : '+fr(x.k)+' kcal · '+f1(x.p)+' g protéines · '+f1(x.g)+' g glucides · '+f1(x.l)+' g lipides.</p>';
+  if(!nw)h+='<label class="bfel">Remplacer par un autre aliment</label><input class="bfein" id="bfrxrq" placeholder="Tape l’aliment qui le remplace" autocomplete="off"><div id="bfrxrr"></div>';
+  h+='<div class="bfebtns">'+(nw?'':'<button type="button" class="bfedel" id="bfrxd">Supprimer</button>')+'<button type="button" class="bfeok" id="bfrxs">'+(nw?'Ajouter':'Sauvegarder')+'</button></div>';
+  modal(h);
+  var v=box.querySelector('#bfrxv');function upd(){var n=Math.max(0,num(v.value)||0);x.gr=n;var m=x.gr/100;box.querySelector('#bfrk').textContent=fr(x.k*m);box.querySelector('#bfrp').textContent=fr(x.p*m)+' g';box.querySelector('#bfrg').textContent=fr(x.g*m)+' g';box.querySelector('#bfrl').textContent=fr(x.l*m)+' g'}
+  v.oninput=upd;var st=x.gr>=100?10:5;box.querySelector('#bfrxm').onclick=function(){v.value=Math.max(0,(num(v.value)||0)-st);upd()};box.querySelector('#bfrxp').onclick=function(){v.value=(num(v.value)||0)+st;upd()};
+  box.querySelector('#bfrxb').onclick=list;
+  if(!nw){finder(box.querySelector('#bfrxrq'),box.querySelector('#bfrxrr'),function(f){x={n:f.n,k:f.k,p:f.p,g:f.g,l:f.l,u:f.u||0,gr:f.u?f.u*Math.max(1,Math.round(x.gr/f.u)):x.gr};body();toast('Remplacé par '+f.n+'. Vérifie la quantité puis sauvegarde.')});
+   box.querySelector('#bfrxd').onclick=function(){W.r.it.splice(k,1);list();toast('Ingrédient supprimé')}}
+  box.querySelector('#bfrxs').onclick=function(){if(!x.gr){toast('Indique une quantité');return}if(nw)W.r.it.push(x);else W.r.it[k]=x;list()}}
+ body()}
+window.BFRX={fromItems:function(n,por,items){var it=items.map(function(e){var gr=e.gr||0,b=e.b||(gr?{k:e.k/gr*100,p:e.p/gr*100,g:e.g/gr*100,l:e.l/gr*100}:null);return b&&gr?{n:e.n,k:b.k,p:b.p,g:b.g,l:b.l,u:0,gr:gr}:null}).filter(Boolean);if(!it.length){toast('Quantités manquantes');return}
+ var r={n:n,por:por,it:it},i=-1;RS.forEach(function(x,j){if(x.n==n)i=j});if(i>-1)RS[i]=r;else RS.unshift(r);sv();sync(r);card();var t=T(it);toast('Recette enregistrée : '+fr(t.k/por)+' kcal la portion. Tu peux la modifier dans « Mes recettes ».')}};
+card();
 })();
 </script>
 </body>

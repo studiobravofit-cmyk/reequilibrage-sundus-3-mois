@@ -1,6 +1,45 @@
 <!doctype html>
 <html lang="fr">
 <head>
+<!--bffin-->
+<style>html.bffin body>*:not(#bffin){display:none!important}#bffin{position:fixed;inset:0;z-index:99999;background:#faf7f2;display:flex;align-items:center;justify-content:center;padding:22px;font-family:Georgia,'Times New Roman',serif;color:#2b2622;overflow:auto}#bffin .bx{max-width:430px;width:100%;background:#fff;border:1px solid #e8dfd2;border-radius:18px;padding:28px 24px;box-shadow:0 10px 40px rgba(60,40,20,.08);text-align:center}#bffin .lg{letter-spacing:.32em;font-size:12px;color:#a8875a;margin-bottom:18px}#bffin h1{font-size:24px;font-weight:normal;margin:0 0 12px}#bffin p{font-family:-apple-system,Helvetica,Arial,sans-serif;font-size:15px;line-height:1.55;color:#5a524a;margin:0 0 14px}#bffin .bt{display:block;width:100%;box-sizing:border-box;margin:10px 0;padding:14px;border-radius:12px;border:0;background:#2b2622;color:#fff;font-size:15px;font-family:-apple-system,Helvetica,Arial,sans-serif;text-decoration:none;cursor:pointer}#bffin .bt.o{background:#fff;color:#2b2622;border:1px solid #2b2622}#bffin input{display:block;width:100%;box-sizing:border-box;margin:8px 0;padding:13px;border:1px solid #ddd2c3;border-radius:10px;font-size:16px;font-family:-apple-system,Helvetica,Arial,sans-serif}#bffin .er{color:#a33;font-size:14px;min-height:18px}#bffin .st{font-size:13px;color:#a8875a;text-transform:uppercase;letter-spacing:.12em;margin:18px 0 4px;font-family:-apple-system,Helvetica,Arial,sans-serif}#bfacc{white-space:nowrap;position:fixed;left:50%;bottom:10px;transform:translateX(-50%);z-index:9999;background:#2b2622;color:#fff;font:12px -apple-system,Helvetica,Arial,sans-serif;padding:6px 12px;border-radius:20px;opacity:.85}</style>
+<script>
+(function(){
+var C={"s": "sundus", "fin": null, "lr": "https://buy.stripe.com/3cI00i8pBg6u51G49u08g1k", "lp": "https://buy.stripe.com/8x2eVc35hbQe79O8pK08g1l", "h": ["c1d9ab56a5c3ba4eb4e014a63289b4f1555c8415dd1905d572c59e57ec1fed5e", "f80699f8415047ed87560e7c98e06ba30ae842a9b1fa5a8637c0ded61e15d3ca", "d4bc22ddb85c6f021382c5f2d7a5fb1416a821781a04db1c9625489b56152f2c", "cc00e1ce39b5b519485ca4a562a6d51ed2281720631b0bad3021eb998f9bf760", "d7f809178bb95eed9394cfc8c4b1edd51eca2901c29095a6bdba31bec5d05961", "2aab1a7b384ec9165ad9e35860310186a3f70cea85133b3e1b0971cc00b26b84", "d8daa43ef1073480f35fc624d43ef5f11ac657939627cf425155a7deb8f1b1f4"]};
+var K='bf_'+C.s+'_acces',st={};try{st=JSON.parse(localStorage.getItem(K)||'{}')}catch(e){}
+var now=Date.now(),fin=C.fin?new Date(C.fin+'T00:00:00').getTime():0;
+var ok=!fin||now<fin||(st.until&&now<st.until);
+window.BF_ACCES={cfg:C,st:st};
+if(ok){if(fin&&st.until)document.addEventListener('DOMContentLoaded',function(){var b=document.createElement('div');b.id='bfacc';b.textContent='Espace Rééquilibrage · jusqu’au '+new Date(st.until).toLocaleDateString('fr-FR');document.body.appendChild(b);setTimeout(function(){b.remove()},5000)});return}
+document.documentElement.classList.add('bffin');
+var m=document.createElement('meta');m.name='robots';m.content='noindex,nofollow';document.head.appendChild(m);
+var pro=!!st.until;
+function h(s){return document.createElement('div').appendChild(document.createTextNode(s)).parentNode.innerHTML}
+function sha(t){return crypto.subtle.digest('SHA-256',new TextEncoder().encode(t)).then(function(b){return Array.from(new Uint8Array(b)).map(function(x){return('0'+x.toString(16)).slice(-2)}).join('')})}
+function draw(step){
+var w=document.getElementById('bffin');if(!w){w=document.createElement('div');w.id='bffin';document.body.appendChild(w)}
+var t=pro?{h:'Ton espace Rééquilibrage est arrivé à son terme',p:'Tes 6 mois d’accès sont terminés. Si tu souhaites continuer, tu peux prolonger ton espace pour 6 mois de plus. Tes menus, tes recettes et ton suivi sont gardés.',b:'Prolonger mon espace',l:C.lp,x:'Prolongation 6 mois · 14,90 €'}:{h:'Ton accompagnement est terminé',p:'Merci pour ce beau chemin ensemble. Si tu souhaites continuer ton rééquilibrage alimentaire, tu peux récupérer ton espace pendant 6 mois. Tu retrouves tout ce que tu as déjà enregistré, tu ne repars pas de zéro.',b:'Récupérer mon espace',l:C.lr,x:'Rééquilibrage 6 mois · 29,90 €'};
+var nm=h(st.nom||''),ml=h(st.mail||'');
+w.innerHTML='<div class="bx"><div class="lg">BRAVO FIT</div>'+(step?'<h1>'+t.b+'</h1><div class="st">Étape 1</div><p>Règle ton accès : '+t.x+'.</p><a class="bt" href="'+t.l+'" target="_blank" rel="noopener">Payer · '+t.x.split('· ')[1]+'</a><div class="st">Étape 2</div><p>Entre tes informations et le code que tu reçois après ton paiement.</p><input id="bfn" placeholder="Ton prénom et ton nom" value="'+nm+'" autocomplete="name"><input id="bfm" type="email" placeholder="Ton adresse mail" value="'+ml+'" autocomplete="email"><input id="bfc" placeholder="Ton code d’accès" autocapitalize="characters"><div class="er" id="bfe"></div><button class="bt" id="bfv">Ouvrir mon espace</button><button class="bt o" id="bfr">Retour</button>':'<h1>'+t.h+'</h1><p>'+t.p+'</p><button class="bt" id="bfg">'+t.b+'</button>')+'</div>';
+if(!step){document.getElementById('bfg').onclick=function(){draw(1)};return}
+document.getElementById('bfr').onclick=function(){draw(0)};
+document.getElementById('bfv').onclick=function(){
+var n=document.getElementById('bfn').value.trim(),e=document.getElementById('bfm').value.trim(),c=document.getElementById('bfc').value.trim().toUpperCase().replace(/\s+/g,''),er=document.getElementById('bfe');
+if(!n){er.textContent='Entre ton prénom et ton nom.';return}
+if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(e)){er.textContent='Ton adresse mail ne semble pas complète.';return}
+sha(C.s+':'+c).then(function(x){
+var used=st.used||[];
+if(C.h.indexOf(x)<0){er.textContent='Ce code n’est pas reconnu. Vérifie-le ou écris à Chantal.';return}
+if(used.indexOf(x)>=0){er.textContent='Ce code a déjà été utilisé.';return}
+var base=Math.max(Date.now(),st.until||0),d=new Date(base);d.setMonth(d.getMonth()+6);
+st.nom=n;st.mail=e;st.until=d.getTime();used.push(x);st.used=used;st.depuis=st.depuis||Date.now();
+localStorage.setItem(K,JSON.stringify(st));location.reload()})}}
+if(document.body)draw(0);else document.addEventListener('DOMContentLoaded',function(){draw(0)});
+})();
+</script>
+<!--/bffin-->
+
+
 <meta name="robots" content="noindex, nofollow, noarchive">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">

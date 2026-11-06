@@ -1234,8 +1234,8 @@ for(var d in R)ORIG[d]=JSON.parse(JSON.stringify(R[d]));
 var host=location.hostname.split('.')[0],repo=location.pathname.split('/')[1]||'';
 function ls(k,v){try{if(v===undefined)return JSON.parse(localStorage.getItem(k)||'null');if(v===null)localStorage.removeItem(k);else localStorage.setItem(k,JSON.stringify(v))}catch(e){return null}}
 function mine(){return ls(K)||{}}
-function isCoach(){return !!ls(CK)}
-if(/[?&]coach\b/.test(location.search))ls(CK,1);
+function isCoach(){return false}
+try{localStorage.removeItem(CK);localStorage.removeItem(TK)}catch(e){}
 function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
 function src(dish){var m=mine();if(!isCoach()&&m[dish])return{o:m[dish],w:'moi'};if(COACH[dish])return{o:COACH[dish],w:'coach'};return{o:null,w:'base'}}
 function apply(){for(var d in ORIG){var s=src(d);R[d]=s.o?s.o.r.map(function(c){return[c[0],c[1],+c[2],c[3]||'']}).filter(function(c){return D[c[0]]}):JSON.parse(JSON.stringify(ORIG[d]))}}

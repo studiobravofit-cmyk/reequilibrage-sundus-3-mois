@@ -214,6 +214,7 @@ tr:last-child td{border:0}
 @media(max-width:720px){.hero{padding:40px 6% 34px}.hero h1{font-size:31px}.sub{margin-left:0;margin-top:14px}.title{font-size:27px}.g2,.g3,.g4,.levels{grid-template-columns:1fr}.g4.stats{grid-template-columns:1fr 1fr}#tform{grid-template-columns:1fr 1fr}.moods{grid-template-columns:repeat(2,1fr)}.quiz .opts{grid-template-columns:1fr}.flipgrid{grid-template-columns:1fr 1fr!important}.flip,.flip .in{min-height:190px}.flip .f b{font-size:18px}}
 @media print{.nav,.toast,.donebtn,.swap{display:none}.panel{display:block}}
 </style>
+<style>.bfvid{position:relative;margin-top:10px;border-radius:14px;overflow:hidden;background:#000}.bfvid video{width:100%;display:block;max-height:320px;object-fit:cover}.bfaim{position:absolute;left:12%;right:12%;top:38%;height:24%;border:2px solid rgba(255,255,255,.85);border-radius:10px;pointer-events:none}.bfvid .swap{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);background:#fff}</style>
 </head>
 <body>
 <div class="app">
@@ -752,7 +753,7 @@ dq();
 <div class="ccrow"><input id="ccgr" class="ccin" inputmode="decimal" placeholder="Quantité"><span id="ccunit">g</span><button class="donebtn" id="ccadd" style="margin:0">Ajouter</button></div>
 <button class="swap" id="ccfav">☆ Ajouter aux favoris</button></div>
 <div id="ccfavs"></div>
-<details class="ccd"><summary>Scanner un code-barres (connexion internet)</summary><div class="ccrow"><input id="ccbar" class="ccin" inputmode="numeric" placeholder="Chiffres sous le code-barres"><button class="swap" id="ccbarb">Chercher</button></div></details>
+<details class="ccd"><summary>Scanner un code-barres (connexion internet)</summary><p style="font-size:13px;color:var(--muted);margin:8px 0">Vise le code-barres du produit avec ton téléphone : la fiche s'ouvre toute seule avec ses valeurs.</p><div class="ccrow"><button class="donebtn" id="bfcam" type="button" style="margin:0">Ouvrir la caméra</button><label class="swap" style="display:inline-block;margin:0">Depuis une photo<input type="file" id="bfbarimg" accept="image/*" style="display:none"></label></div><div class="bfvid" id="bfvidbox" style="display:none"><video id="bfvid" playsinline muted></video><div class="bfaim"></div><button class="swap" id="bfcamstop" type="button">Fermer la caméra</button></div><div class="ccrow" style="margin-top:10px"><input id="ccbar" class="ccin" inputmode="numeric" placeholder="Ou tape les chiffres du code-barres"><button class="swap" id="ccbarb">Chercher</button></div></details>
 <details class="ccd"><summary>Créer mon aliment</summary>
 <input id="cnn" class="ccin" placeholder="Nom de l'aliment">
 <div class="ccrow4"><input id="cnk" class="ccin" inputmode="decimal" placeholder="kcal/100 g"><input id="cnp" class="ccin" inputmode="decimal" placeholder="Prot."><input id="cng" class="ccin" inputmode="decimal" placeholder="Gluc."><input id="cnl" class="ccin" inputmode="decimal" placeholder="Lip."></div>
@@ -1184,6 +1185,23 @@ $('#ccavg').innerHTML=nd?'Moyenne sur '+nd+' jour(s) notés : <b>'+r0(sm/nd).toL
 $('#ccexp').onclick=function(){var data={},i,n;for(i=0;i<localStorage.length;i++){n=localStorage.key(i);if(n.indexOf('bf_sundus_')==0)data[n]=localStorage.getItem(n)}var a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(data)],{type:'application/json'}));a.download='sauvegarde-sundus-'+key(0)+'.json';document.body.appendChild(a);a.click();a.remove();t('Sauvegarde téléchargée')};
 $('#ccimp').onchange=function(){var f=this.files[0];if(!f)return;var r=new FileReader();r.onload=function(){try{var d=JSON.parse(r.result);Object.keys(d).forEach(function(k){localStorage.setItem(k,d[k])});t('Sauvegarde importée');setTimeout(function(){location.reload()},900)}catch(e){t('Fichier illisible')}};r.readAsText(f)};
 favs();draw();
+})();
+</script>
+<script>
+(function(){function $(s){return document.querySelector(s)}
+var stream=null,zx=null,loop=null;
+function msg(x){var el=document.getElementById('toast');if(!el)return;el.textContent=x;el.classList.add('show');clearTimeout(el._t);el._t=setTimeout(function(){el.classList.remove('show')},2200)}
+function lib(src,test){return new Promise(function(res,rej){if(test())return res();var sc=document.createElement('script');sc.src=src;sc.onload=function(){res()};sc.onerror=rej;document.head.appendChild(sc)})}
+function zxing(){return lib('https://cdn.jsdelivr.net/npm/@zxing/library@0.21.3/umd/index.min.js',function(){return window.ZXing})}
+function camStop(){if(loop){clearTimeout(loop);loop=null}if(zx){try{zx.reset()}catch(e){}zx=null}if(stream){stream.getTracks().forEach(function(x){x.stop()});stream=null}$('#bfvidbox').style.display='none'}
+function found(c){camStop();if(navigator.vibrate)navigator.vibrate(60);$('#ccbar').value=c;$('#ccbarb').click()}
+$('#bfcamstop').onclick=camStop;
+$('#bfcam').onclick=function(){var v=$('#bfvid');$('#bfvidbox').style.display='block';
+if('BarcodeDetector' in window){navigator.mediaDevices.getUserMedia({video:{facingMode:'environment'}}).then(function(st){stream=st;v.srcObject=st;v.play();var det=new BarcodeDetector({formats:['ean_13','ean_8','upc_a','upc_e']});(function scan(){det.detect(v).then(function(r){if(r.length)found(r[0].rawValue);else loop=setTimeout(scan,250)}).catch(function(){loop=setTimeout(scan,400)})})()}).catch(function(){camStop();msg('Autorise la caméra dans les réglages')});return}
+zxing().then(function(){zx=new ZXing.BrowserMultiFormatReader();zx.decodeFromConstraints({video:{facingMode:'environment'}},v,function(r){if(r)found(r.getText())}).catch(function(){camStop();msg('Autorise la caméra dans les réglages')})}).catch(function(){camStop();msg('Pas de connexion internet')})};
+$('#bfbarimg').onchange=function(){var f=this.files[0];this.value='';if(!f)return;var u=URL.createObjectURL(f);msg('Lecture du code-barres…');
+function viaZ(){zxing().then(function(){return new ZXing.BrowserMultiFormatReader().decodeFromImageUrl(u)}).then(function(r){found(r.getText())}).catch(function(){msg('Code-barres illisible : rapproche-toi et évite les reflets')})}
+if('BarcodeDetector' in window){createImageBitmap(f).then(function(b){return new BarcodeDetector().detect(b)}).then(function(r){if(r.length)found(r[0].rawValue);else viaZ()}).catch(viaZ)}else viaZ()};
 })();
 </script>
 </body>

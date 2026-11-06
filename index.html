@@ -889,7 +889,7 @@ function tot(plaisir){if(!T||!acc)return '';return '<div class="bft"><b>Total de
 function ui(L,f){cb=f;var el=document.getElementById('bfpal');if(!el)return;var c=cur(L),h=(c.key.charAt(0)=='e'?'<div class="bfph">Ton étape actuelle</div><p class="bfpp">Choisis l\'étape que je t\'ai donnée. Tous les grammes de tes menus s\'adaptent.</p>':'<div class="bfph">Ton palier actuel</div><p class="bfpp">Choisis le palier que je t\'ai donné. Tous les grammes de tes menus s\'adaptent.</p>')+'<div class="bfpb">';
 keys(L).forEach(function(k){var x=L[k];h+='<button data-k="'+k+'" class="'+(k==c.key?'on':'')+'">'+nm(x)+'<small>'+fr(x.k)+' kcal</small></button>'});
 el.innerHTML=h+'</div>';el.querySelectorAll('button').forEach(function(b){b.onclick=function(){set(b.dataset.k);ui(LL,cb);if(cb)cb()}})}
-return{cur:cur,g:g,tot:tot,ui:ui}})();
+return{cur:cur,g:g,tot:tot,ui:ui,R:R,D:D,S:S,re:function(){if(cb)cb()}}})();
 </script>
 <script>
 (function(){
@@ -1202,6 +1202,98 @@ zxing().then(function(){zx=new ZXing.BrowserMultiFormatReader();zx.decodeFromCon
 $('#bfbarimg').onchange=function(){var f=this.files[0];this.value='';if(!f)return;var u=URL.createObjectURL(f);msg('Lecture du code-barres…');
 function viaZ(){zxing().then(function(){return new ZXing.BrowserMultiFormatReader().decodeFromImageUrl(u)}).then(function(r){found(r.getText())}).catch(function(){msg('Code-barres illisible : rapproche-toi et évite les reflets')})}
 if('BarcodeDetector' in window){createImageBitmap(f).then(function(b){return new BarcodeDetector().detect(b)}).then(function(r){if(r.length)found(r[0].rawValue);else viaZ()}).catch(viaZ)}else viaZ()};
+})();
+</script>
+<style>.bfeb{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:8px}
+.bfedit{border:1px solid var(--wine,#6b2440);background:transparent;color:var(--wine,#6b2440);border-radius:999px;padding:7px 13px;font:inherit;font-size:12.5px;font-weight:800;cursor:pointer}
+.bfetag{font-size:11px;font-weight:800;color:var(--wine,#6b2440);background:var(--gold-soft,#f6f1ea);border-radius:999px;padding:4px 9px}
+.bfe{position:fixed;inset:0;background:rgba(30,15,25,.55);display:none;align-items:flex-end;justify-content:center;z-index:9999}
+.bfec{background:#fff;width:100%;max-width:560px;max-height:92vh;overflow:auto;border-radius:22px 22px 0 0;padding:18px 18px 26px;box-shadow:0 -10px 40px rgba(0,0,0,.2);color:var(--plum,#3a2233)}
+@media(min-width:700px){.bfe{align-items:center}.bfec{border-radius:22px}}
+.bfeh{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}.bfeh b{font-size:17px;color:var(--wine,#6b2440)}
+.bfex{border:0;background:var(--gold-soft,#f6f1ea);width:34px;height:34px;border-radius:50%;font-size:20px;cursor:pointer;color:var(--wine,#6b2440)}
+.bfel{display:block;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--muted,#8a7a85);margin:14px 0 6px}
+.bfein{width:100%;box-sizing:border-box;border:1px solid var(--line,#e6e0ea);border-radius:14px;padding:11px 13px;font:inherit;font-size:15px;color:inherit;background:#fff}
+.bferow{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--line,#eee)}.bferow>div{flex:1;min-width:0}.bferow span{display:block;font-weight:700;font-size:14px}.bferow small{font-size:11.5px;color:var(--muted,#8a7a85)}
+.bfeg{display:flex;align-items:center;gap:4px;font-size:13px;white-space:nowrap}.bfeg input{width:64px;border:1px solid var(--line,#ddd);border-radius:10px;padding:7px;font:inherit;font-size:14px;text-align:right}
+.bfeauto{font-size:12px;color:var(--muted,#8a7a85);white-space:nowrap}
+.bferm{border:0;background:transparent;color:var(--muted,#8a7a85);font-size:20px;cursor:pointer;width:30px}
+#bferes{display:flex;flex-direction:column;gap:6px;margin-top:8px}.bferes{display:flex;justify-content:space-between;align-items:center;text-align:left;border:1px solid var(--line,#e6e0ea);background:#fff;border-radius:12px;padding:10px 12px;font:inherit;font-size:14px;font-weight:700;color:inherit;cursor:pointer}.bferes small{font-weight:600;font-size:11px;color:var(--muted,#8a7a85)}
+.bfenote{font-size:12.5px;color:var(--muted,#8a7a85);line-height:1.5;margin:10px 0 0}.bfecoach a{color:var(--wine,#6b2440)}
+.bfebtns{display:flex;gap:10px;margin-top:16px}.bfeok{flex:1;border:0;background:var(--wine,#6b2440);color:#fff;border-radius:14px;padding:13px;font:inherit;font-weight:800;font-size:15px;cursor:pointer}.bfeok:disabled{opacity:.6}
+.bfecan{border:1px solid var(--line,#ddd);background:#fff;color:inherit;border-radius:14px;padding:13px 16px;font:inherit;font-weight:700;cursor:pointer}
+.bfereset{display:block;width:100%;margin-top:10px;border:0;background:transparent;color:var(--wine,#6b2440);text-decoration:underline;font:inherit;font-size:13px;cursor:pointer;padding:6px}
+.bfetoast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--plum,#3a2233);color:#fff;padding:11px 16px;border-radius:14px;font-size:14px;z-index:10000;max-width:90vw;text-align:center}
+</style>
+<script>
+(function(){
+if(!window.BFG||!BFG.R)return;
+var R=BFG.R,D=BFG.D,FULL={"skyr":["Skyr nature",60,10.5,4,0.2],"skyrb":["Skyr à boire",60,8,6,0.2],"fb":["Fromage blanc 3 %",75,7.5,4,3.2],"fb0":["Fromage blanc 0 %",48,7.5,4,0.2],"fbe":["Fromage blanc entier",115,7,3.5,8],"yg2":["Yaourt grec 2 %",73,9,4,2],"yge":["Yaourt grec entier",130,5,4,10],"yab":["Yaourt à boire",75,3.5,11,1.8],"lait_d":["Lait demi-écrémé",46,3.3,4.8,1.6],"lait_e":["Lait entier",64,3.2,4.8,3.6],"oeuf":["Œufs",140,12.5,0.5,10,"",55],"whey":["Whey",380,78,6,5],"poulet":["Blanc de poulet",110,23,0,1.5,"r"],"dinde":["Escalope de dinde",107,24,0,1,"r"],"boeuf5":["Bœuf haché 5 %",125,21,0,5,"r"],"boeuf10":["Bœuf haché 10 %",165,20,0,10,"r"],"saumon":["Saumon",200,20,0,13,"r"],"cabillaud":["Cabillaud",80,18,0,0.7,"r"],"colin":["Colin",85,18,0,1,"r"],"crevettes":["Crevettes décortiquées",80,18,0,1,"r"],"thon":["Thon au naturel égoutté",115,26,0,1],"saumonf":["Saumon fumé",180,22,0,10],"jdinde":["Jambon de dinde",105,20,1,2.5],"jambon":["Jambon blanc",115,20,1,3.5],"saucvol":["Saucisse de volaille",200,15,2,15,"r"],"grisons":["Viande des Grisons",160,35,1,2],"riz":["Riz",355,8,78,0.8,"r"],"pates":["Pâtes",355,12.5,71,1.5,"r"],"pcompl":["Pâtes complètes",345,13,64,2.5,"r"],"quinoa":["Quinoa",370,14,64,6,"r"],"semoule":["Semoule",360,12.5,72,1.5,"r"],"semoulec":["Semoule complète",350,13,68,2,"r"],"lentilles":["Lentilles corail",340,24,50,2,"r"],"lentv":["Lentilles vertes",330,24,48,1.5,"r"],"pchiches":["Pois chiches cuits",140,7.5,18,2.5],"hrouges":["Haricots rouges cuits",115,8,14,0.5],"pdt":["Pommes de terre",80,2,17,0.1,"r"],"patate":["Patate douce",86,1.6,20,0.1,"r"],"gnocchi":["Gnocchis",150,4,32,0.5],"nouilles":["Nouilles de blé",360,12,72,1.5,"r"],"nouillesriz":["Nouilles de riz",360,6,82,0.6,"r"],"rizsushi":["Riz à sushi cuit",150,3,33,0.3],"arborio":["Riz à risotto",350,7,78,0.6,"r"],"cremeriz":["Crème de riz (poudre)",360,7,80,1],"pain":["Pain",260,8.5,51,2],"painc":["Pain complet",245,9,43,3],"painl":["Pain au levain",250,8.5,48,1.5],"painmie":["Pain de mie",265,8,48,4.5],"painburger":["Pain à burger",270,9,48,4.5],"painlait":["Pain au lait",350,8.5,55,10],"brioche":["Brioche",380,8,52,15],"briochec":["Brioche complète",350,9,50,12],"wrap":["Galette de blé (wrap)",300,8.5,50,7],"wrapc":["Wrap complet",290,9.5,46,7],"avoine":["Flocons d'avoine",370,13.5,58.7,7],"muesli":["Muesli sans sucre ajouté",360,10,60,7],"granola":["Granola",450,9,62,17],"galette":["Galettes de riz",385,8,81,3],"crackers":["Crackers",450,10,68,14],"farine":["Farine",350,10,72,1.5],"farinec":["Farine complète",340,12,64,2.5],"sarrasin":["Farine de sarrasin",340,12,70,3],"brisee":["Pâte brisée",400,6,45,22],"barre":["Barre de céréales",410,6,68,12],"madeleine":["Madeleine",450,6,55,22],"cookie":["Cookie maison",480,6,62,22],"cake":["Cake maison aux pépites",400,6,50,19],"gaufre":["Gaufre maison",330,7,40,16],"banane":["Banane",90,1.1,20,0.3],"pomme":["Pomme",54,0.3,12,0.2],"poire":["Poire",55,0.4,12.5,0.1],"kiwi":["Kiwi",60,1,11,0.5],"orange":["Orange",47,0.9,9.4,0.1],"clementine":["Clémentines",47,0.8,10,0.2],"frouges":["Fruits rouges",45,1,7,0.4],"fraises":["Fraises",33,0.7,6,0.3],"framboises":["Framboises",45,1.2,5,0.5],"mangue":["Mangue",65,0.6,14,0.3],"compote":["Compote sans sucre ajouté",60,0.3,13,0.2],"acai":["Purée d'açaï",70,1,6,5],"jus":["Jus d'orange",45,0.7,10,0.1],"avocat":["Avocat",200,2,2,20],"huile":["Huile d'olive",900,0,0,100],"beurre":["Beurre",745,0.7,0.6,82],"pb":["Beurre de cacahuète",600,25,15,50],"bamande":["Beurre d'amande",620,21,10,55],"amandes":["Amandes",600,21,7,52],"noix":["Noix",690,15,7,65],"cajou":["Noix de cajou",590,18,27,46],"noisettes":["Noisettes",650,14,7,62],"chia":["Graines de chia",490,17,8,31],"sesame":["Graines de sésame",600,18,12,50],"coco_r":["Noix de coco râpée",660,6,7,64],"pamande":["Poudre d'amande",620,21,7,54],"creme15":["Crème fraîche 15 %",160,3,4,15],"creme30":["Crème fraîche entière",290,2,3,30],"coco":["Lait de coco",180,1.5,3,18],"cocol":["Lait de coco léger",70,0.7,2,7],"pesto":["Pesto",450,5,5,45],"parmesan":["Parmesan",400,33,0,29],"comte":["Comté",410,27,0,34],"emmental":["Emmental râpé",380,28,0,29],"mozza":["Mozzarella",250,18,1,19],"ffrais":["Fromage frais",200,7,3,18],"ffl":["Fromage frais léger",110,8,4,7],"fportion":["Fromage en portion",250,11,5,21],"bechamel":["Béchamel",120,3,9,8],"miel":["Miel",320,0.3,80,0],"erable":["Sirop d'érable",260,0,67,0],"confiture":["Confiture",250,0.4,60,0],"choco85":["Chocolat noir 85 %",590,11,19,50],"choco70":["Chocolat noir 70 %",580,8,30,45],"pepites":["Pépites de chocolat",500,5,60,28],"cacao":["Cacao en poudre non sucré",380,20,12,21],"chocopoudre":["Chocolat en poudre",400,5,80,4],"courgettes":["Courgettes",17,1.2,2,0.3],"carottes":["Carottes",36,0.8,7,0.3],"hv":["Haricots verts",30,2,4,0.2],"brocoli":["Brocoli",34,3,4,0.4],"epinards":["Épinards",25,3,1.5,0.5],"poivrons":["Poivrons",30,1,5,0.3],"tomates":["Tomates",20,0.9,3,0.3],"tcerises":["Tomates cerises",20,0.9,3,0.3],"concombre":["Concombre",13,0.6,2,0.1],"salade":["Salade verte",15,1.3,1.5,0.2],"ratatouille":["Ratatouille",60,1.2,5,4],"legumes":["Légumes",40,2,6,0.5],"crudites":["Crudités",25,1,4,0.2],"champi":["Champignons",25,3,1.5,0.3],"potiron":["Velouté de potiron",30,1,6,0.2],"roquette":["Roquette",25,2.6,2,0.7],"edamame":["Edamame",120,11,7,5],"mais":["Maïs",90,3,16,1.5],"ppois":["Petits pois",80,5.5,10,0.5],"stomate":["Sauce tomate",45,1.5,7,1],"soupe":["Soupe de légumes",35,1,5,1.2],"miso":["Soupe miso",30,2,3,1],"soja":["Sauce soja",60,8,6,0.1],"cannelle":["Cannelle",0,0,0,0,"h"],"menthe":["Menthe fraîche",0,0,0,0,"h"],"citron":["Citron",0,0,0,0,"h"],"paprika":["Paprika",0,0,0,0,"h"]},ORIG={},REG=[],K='bf_'+BFG.S+'_recettes',COACH={},CK='bf_coach',TK='bf_coach_tok';
+for(var f in FULL)if(!D[f])D[f]=FULL[f];
+for(var d in R)ORIG[d]=JSON.parse(JSON.stringify(R[d]));
+var host=location.hostname.split('.')[0],repo=location.pathname.split('/')[1]||'';
+function ls(k,v){try{if(v===undefined)return JSON.parse(localStorage.getItem(k)||'null');if(v===null)localStorage.removeItem(k);else localStorage.setItem(k,JSON.stringify(v))}catch(e){return null}}
+function mine(){return ls(K)||{}}
+function isCoach(){return !!ls(CK)}
+if(/[?&]coach\b/.test(location.search))ls(CK,1);
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+function src(dish){var m=mine();if(!isCoach()&&m[dish])return{o:m[dish],w:'moi'};if(COACH[dish])return{o:COACH[dish],w:'coach'};return{o:null,w:'base'}}
+function apply(){for(var d in ORIG){var s=src(d);R[d]=s.o?s.o.r.map(function(c){return[c[0],c[1],+c[2],c[3]||'']}).filter(function(c){return D[c[0]]}):JSON.parse(JSON.stringify(ORIG[d]))}}
+var g0=BFG.g;
+BFG.g=function(dish,slot){var out=g0(dish,slot);if(!ORIG[dish])return out;var s=src(dish),i=REG.length;REG.push([dish,slot]);
+if(s.o&&s.o.t&&out.indexOf(dish)==0)out=esc(s.o.t)+out.slice(dish.length);
+var tag=s.w=='moi'?'<span class="bfetag">Ta version</span>':(s.w=='coach'&&isCoach()?'<span class="bfetag">Modifiée par toi</span>':'');
+var b='<span class="bfeb">'+tag+'<button type="button" class="bfedit" data-i="'+i+'">'+(isCoach()?'Modifier pour ma coachée':'Modifier cette recette')+'</button></span>';
+var j=out.lastIndexOf('</span>');return j>0?out.slice(0,j)+b+out.slice(j):out+b};
+function role(f){var d=D[f];if(d[5]=='h')return'X';var p=d[2]*4,g=d[3]*4,l=d[4]*9;if(d[1]<70&&d[2]<7)return'X';if(p>=g&&p>=l)return'P';if(l>=g)return'F';return'C'}
+var RN={P:'Protéine',C:'Féculent / sucre',F:'Matière grasse',X:'Quantité fixe'},DEF={P:100,C:50,F:10,X:100};
+var box=null,cur=null,work=null;
+function modal(h){if(!box){box=document.createElement('div');box.className='bfe';document.body.appendChild(box);box.addEventListener('click',function(e){if(e.target==box)close()})}box.innerHTML='<div class="bfec">'+h+'</div>';box.style.display='flex';document.body.style.overflow='hidden'}
+function close(){if(box)box.style.display='none';document.body.style.overflow=''}
+function open(i){cur=REG[i];if(!cur)return;var s=src(cur[0]);work={t:(s.o&&s.o.t)||cur[0],r:JSON.parse(JSON.stringify(R[cur[0]]))};draw()}
+function draw(){var dish=cur[0],s=src(dish),co=isCoach(),h='<div class="bfeh"><b>'+(co?'Modifier la recette de ta coachée':'Modifier ta recette')+'</b><button type="button" class="bfex" data-a="x" aria-label="Fermer">×</button></div>';
+h+='<label class="bfel">Nom du plat</label><input class="bfein" id="bfet" value="'+esc(work.t)+'">';
+h+='<label class="bfel">Ingrédients</label><div class="bfelist">';
+if(!work.r.length)h+='<p class="bfenote">Aucun ingrédient pour l’instant. Ajoute-en un ci-dessous.</p>';
+work.r.forEach(function(c,k){var d=D[c[0]],nm=c[3]||d[0];h+='<div class="bferow"><div><span>'+esc(nm)+'</span><small>'+RN[c[1]]+'</small></div>'+(c[1]=='X'&&d[5]!='h'?'<span class="bfeg"><input type="number" inputmode="decimal" min="0" data-k="'+k+'" value="'+c[2]+'"> g</span>':'<span class="bfeauto">'+(d[5]=='h'?'selon ton goût':'calculé')+'</span>')+'<button type="button" class="bferm" data-k="'+k+'" aria-label="Retirer">×</button></div>'});
+if(work.r.length&&!work.r.some(function(c){return c[1]=='P'}))h+='<p class="bfenote" style="color:var(--wine,#6b2440)">Pense à garder une protéine dans ce repas : viande, poisson, œufs, skyr ou fromage blanc.</p>';
+h+='</div><label class="bfel">Ajouter un ingrédient</label><input class="bfein" id="bfeq" placeholder="Tape un aliment, par exemple riz, poulet, avocat" autocomplete="off"><div id="bferes"></div>';
+h+='<p class="bfenote">Les grammes des protéines, féculents et matières grasses se calculent tout seuls pour '+(co?'son':'ton')+' palier. Seules les quantités fixes, comme les légumes ou les fruits, se règlent à la main.</p>';
+h+='<div class="bfebtns"><button type="button" class="bfeok" data-a="s">'+(co?'Enregistrer sur son site':'Enregistrer')+'</button><button type="button" class="bfecan" data-a="x">Annuler</button></div>';
+if(co&&COACH[dish])h+='<button type="button" class="bfereset" data-a="rc">Remettre la recette de départ sur son site</button>';
+if(!co&&s.w=='moi')h+='<button type="button" class="bfereset" data-a="rm">'+(COACH[dish]?'Revenir à la recette de ta coach':'Revenir à la recette de départ')+'</button>';
+if(co)h+='<p class="bfenote bfecoach">Mode coach · <a href="#" data-a="q">quitter le mode coach</a></p>';
+modal(h);bind()}
+function bind(){var q=box.querySelector('#bfeq');q.oninput=function(){var v=q.value.trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,''),r=box.querySelector('#bferes');if(v.length<2){r.innerHTML='';return}var out=[];for(var f in D){var n=D[f][0].toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');if(n.indexOf(v)>-1)out.push(f);if(out.length>=8)break}
+r.innerHTML=out.length?out.map(function(f){return'<button type="button" class="bferes" data-f="'+f+'">'+esc(D[f][0])+'<small>'+RN[role(f)]+'</small></button>'}).join(''):'<p class="bfenote">Aucun aliment trouvé. Essaie un autre mot.</p>';
+r.querySelectorAll('.bferes').forEach(function(b){b.onclick=function(){var f=b.dataset.f,ro=role(f),d=D[f];work.t=box.querySelector('#bfet').value;work.r.push([f,ro,D[f][5]=='h'?1:(d[6]||DEF[ro]),'']);draw()}})};
+box.querySelector('#bfet').oninput=function(){work.t=this.value};
+box.querySelectorAll('.bfeg input').forEach(function(x){x.oninput=function(){work.r[+x.dataset.k][2]=Math.max(0,parseFloat(String(x.value).replace(',','.'))||0)}});
+box.querySelectorAll('.bferm').forEach(function(b){b.onclick=function(){work.t=box.querySelector('#bfet').value;work.r.splice(+b.dataset.k,1);draw()}});
+box.querySelectorAll('[data-a]').forEach(function(b){b.onclick=function(e){e.preventDefault();act(b.dataset.a,b)}})}
+function redraw(){apply();if(BFG.re)BFG.re()}
+function toast2(t){var e=document.createElement('div');e.className='bfetoast';e.textContent=t;document.body.appendChild(e);setTimeout(function(){e.remove()},2600)}
+function act(a,b){var dish=cur&&cur[0];
+if(a=='x'){close();return}
+if(a=='q'){ls(CK,null);close();redraw();toast2('Mode coach fermé');return}
+if(a=='s'){if(!work.r.length){toast2('Ajoute au moins un ingrédient');return}var o={t:(work.t||'').trim()||dish,r:work.r};if(o.t==dish)delete o.t;
+ if(isCoach()){var all=JSON.parse(JSON.stringify(COACH));all[dish]=o;publish(all,b,'Recette enregistrée sur son site');return}
+ var m=mine();m[dish]=o;ls(K,m);close();redraw();toast2('Ta recette est enregistrée');return}
+if(a=='rm'){var m2=mine();delete m2[dish];ls(K,m2);close();redraw();toast2('Recette remise comme avant');return}
+if(a=='rc'){var all2=JSON.parse(JSON.stringify(COACH));delete all2[dish];publish(all2,b,'Recette de départ remise sur son site');return}}
+function api(p,o){o=o||{};o.headers={'Authorization':'Bearer '+ls(TK),'Accept':'application/vnd.github+json'};return fetch('https://api.github.com/repos/'+host+'/'+repo+p,o)}
+function b64(s){return btoa(unescape(encodeURIComponent(s)))}
+function publish(all,btn,msg){if(!ls(TK)){askKey(function(){publish(all,btn,msg)});return}btn.disabled=true;btn.textContent='Enregistrement…';
+ api('/contents/recettes.json?ref=main&t='+Date.now()).then(function(r){if(r.status==401||r.status==403)throw'key';return r.status==200?r.json():{}}).then(function(j){
+  return api('/contents/recettes.json',{method:'PUT',body:JSON.stringify({message:'Recettes modifiées par la coach',content:b64(JSON.stringify({v:1,r:all},null,1)),sha:j.sha,branch:'main'})})}).then(function(r){if(r.status==401||r.status==403||r.status==404)throw'key';if(!r.ok)throw'err';
+  COACH=all;close();redraw();toast2(msg+'. Elle la verra d’ici 1 à 2 minutes.')}).catch(function(e){btn.disabled=false;btn.textContent='Réessayer';if(e=='key'){ls(TK,null);toast2('Ta clé ne fonctionne pas pour ce site. Entre-la à nouveau.')}else toast2('Pas de connexion. Réessaie dans un instant.')})}
+function askKey(next){modal('<div class="bfeh"><b>Ta clé de coach</b><button type="button" class="bfex" id="bfkx" aria-label="Fermer">×</button></div><p class="bfenote">Pour enregistrer sur le site de ta coachée, colle ici ta clé GitHub. Tu ne la donnes qu’une fois sur ce téléphone, elle reste enregistrée seulement chez toi et sert pour tous les sites de tes coachées.</p><input class="bfein" id="bfk" type="password" placeholder="Colle ta clé ici" autocomplete="off"><div class="bfebtns"><button type="button" class="bfeok" id="bfkok">Valider</button><button type="button" class="bfecan" id="bfkc">Retour</button></div>');
+ box.querySelector('#bfkx').onclick=close;box.querySelector('#bfkc').onclick=function(){draw()};box.querySelector('#bfkok').onclick=function(){var v=box.querySelector('#bfk').value.trim();if(!v){toast2('Colle ta clé');return}ls(TK,v);draw();setTimeout(function(){var b=box.querySelector('.bfeok');if(b)b.click()},50)}}
+document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('.bfedit');if(b){e.preventDefault();open(+b.dataset.i)}});
+var g1=BFG.re;
+function load(){var p=isCoach()&&ls(TK)?api('/contents/recettes.json?ref=main&t='+Date.now()).then(function(r){if(!r.ok)throw 0;return r.json()}).then(function(j){return JSON.parse(decodeURIComponent(escape(atob(j.content.replace(/\n/g,'')))))}):fetch('recettes.json?t='+Date.now(),{cache:'no-store'}).then(function(r){if(!r.ok)throw 0;return r.json()});
+ return p.then(function(j){COACH=(j&&j.r)||{}}).catch(function(){})}
+redraw();load().then(redraw);
 })();
 </script>
 </body>
